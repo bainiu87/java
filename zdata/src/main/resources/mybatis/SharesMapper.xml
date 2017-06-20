@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhihe.zdata.mapper.SharesMapper" >
+  <resultMap id="BaseResultMap" type="com.zhihe.zdata.domain.Shares" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="webid" property="webid" jdbcType="VARCHAR" />
+    <result column="cookieid" property="cookieid" jdbcType="VARCHAR" />
+    <result column="channel" property="channel" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="devicetype" property="devicetype" jdbcType="VARCHAR" />
+    <result column="res" property="res" jdbcType="VARCHAR" />
+    <result column="colordepth" property="colordepth" jdbcType="VARCHAR" />
+    <result column="lang" property="lang" jdbcType="VARCHAR" />
+    <result column="brower" property="brower" jdbcType="VARCHAR" />
+    <result column="country" property="country" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="VARCHAR" />
+    <result column="region" property="region" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="county" property="county" jdbcType="VARCHAR" />
+    <result column="isp" property="isp" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="TIMESTAMP" />
+    <result column="url" property="url" jdbcType="LONGVARCHAR" />
+    <result column="domain" property="domain" jdbcType="LONGVARCHAR" />
+    <result column="referrer" property="referrer" jdbcType="LONGVARCHAR" />
+    <result column="title" property="title" jdbcType="LONGVARCHAR" />
+    <result column="uri" property="uri" jdbcType="LONGVARCHAR" />
+    <result column="agent" property="agent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, webid, cookieid, channel, phone, ip, devicetype, res, colordepth, lang, brower, 
+    country, area, region, city, county, isp, date
+  </sql>
+  <sql id="Blob_Column_List" >
+    url, domain, referrer, title, uri, agent
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shares
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from shares
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhihe.zdata.domain.Shares" >
+    insert into shares (webid,cookieid,channel,phone,ip,devicetype,res,colordepth,
+                  lang,brower,url,
+                  `domain`, referrer,title,uri,agent,`date`
+      )
+    values (#{webid,jdbcType=VARCHAR}, #{cookieid,jdbcType=VARCHAR},
+      #{channel,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, 
+      #{devicetype,jdbcType=VARCHAR}, #{res,jdbcType=VARCHAR}, #{colordepth,jdbcType=VARCHAR}, 
+      #{lang,jdbcType=VARCHAR}, #{brower,jdbcType=VARCHAR}, #{url,jdbcType=LONGVARCHAR}, #{domain,jdbcType=LONGVARCHAR}, #{referrer,jdbcType=LONGVARCHAR},
+      #{title,jdbcType=LONGVARCHAR}, #{uri,jdbcType=LONGVARCHAR}, #{agent,jdbcType=LONGVARCHAR},#{date,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective">
+    insert into shares
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="webid != null" >
+        webid,
+      </if>
+      <if test="cookieid != null" >
+        cookieid,
+      </if>
+      <if test="channel != null" >
+        channel,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="devicetype != null" >
+        devicetype,
+      </if>
+      <if test="res != null" >
+        res,
+      </if>
+      <if test="colordepth != null" >
+        colordepth,
+      </if>
+      <if test="lang != null" >
+        lang,
+      </if>
+      <if test="brower != null" >
+        brower,
+      </if>
+      <if test="country != null" >
+        country,
+      </if>
+      <if test="area != null" >
+        area,
+      </if>
+      <if test="region != null" >
+        region,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="county != null" >
+        county,
+      </if>
+      <if test="isp != null" >
+        isp,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="domain != null" >
+        domain,
+      </if>
+      <if test="referrer != null" >
+        referrer,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="uri != null" >
+        uri,
+      </if>
+      <if test="agent != null" >
+        agent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="webid != null" >
+        #{webid,jdbcType=VARCHAR},
+      </if>
+      <if test="cookieid != null" >
+        #{cookieid,jdbcType=VARCHAR},
+      </if>
+      <if test="channel != null" >
+        #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="devicetype != null" >
+        #{devicetype,jdbcType=VARCHAR},
+      </if>
+      <if test="res != null" >
+        #{res,jdbcType=VARCHAR},
+      </if>
+      <if test="colordepth != null" >
+        #{colordepth,jdbcType=VARCHAR},
+      </if>
+      <if test="lang != null" >
+        #{lang,jdbcType=VARCHAR},
+      </if>
+      <if test="brower != null" >
+        #{brower,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null" >
+        #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="region != null" >
+        #{region,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null" >
+        #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="isp != null" >
+        #{isp,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="domain != null" >
+        #{domain,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="referrer != null" >
+        #{referrer,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="uri != null" >
+        #{uri,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="agent != null" >
+        #{agent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhihe.zdata.domain.Shares" >
+    update shares
+    <set >
+      <if test="webid != null" >
+        webid = #{webid,jdbcType=VARCHAR},
+      </if>
+      <if test="cookieid != null" >
+        cookieid = #{cookieid,jdbcType=VARCHAR},
+      </if>
+      <if test="channel != null" >
+        channel = #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="devicetype != null" >
+        devicetype = #{devicetype,jdbcType=VARCHAR},
+      </if>
+      <if test="res != null" >
+        res = #{res,jdbcType=VARCHAR},
+      </if>
+      <if test="colordepth != null" >
+        colordepth = #{colordepth,jdbcType=VARCHAR},
+      </if>
+      <if test="lang != null" >
+        lang = #{lang,jdbcType=VARCHAR},
+      </if>
+      <if test="brower != null" >
+        brower = #{brower,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null" >
+        country = #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="region != null" >
+        region = #{region,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null" >
+        county = #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="isp != null" >
+        isp = #{isp,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        date = #{date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="domain != null" >
+        domain = #{domain,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="referrer != null" >
+        referrer = #{referrer,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="uri != null" >
+        uri = #{uri,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="agent != null" >
+        agent = #{agent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zhihe.zdata.domain.Shares" >
+    update shares
+    set webid = #{webid,jdbcType=VARCHAR},
+      cookieid = #{cookieid,jdbcType=VARCHAR},
+      channel = #{channel,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      devicetype = #{devicetype,jdbcType=VARCHAR},
+      res = #{res,jdbcType=VARCHAR},
+      colordepth = #{colordepth,jdbcType=VARCHAR},
+      lang = #{lang,jdbcType=VARCHAR},
+      brower = #{brower,jdbcType=VARCHAR},
+      country = #{country,jdbcType=VARCHAR},
+      area = #{area,jdbcType=VARCHAR},
+      region = #{region,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      county = #{county,jdbcType=VARCHAR},
+      isp = #{isp,jdbcType=VARCHAR},
+      date = #{date,jdbcType=TIMESTAMP},
+      url = #{url,jdbcType=LONGVARCHAR},
+      domain = #{domain,jdbcType=LONGVARCHAR},
+      referrer = #{referrer,jdbcType=LONGVARCHAR},
+      title = #{title,jdbcType=LONGVARCHAR},
+      uri = #{uri,jdbcType=LONGVARCHAR},
+      agent = #{agent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhihe.zdata.domain.Shares" >
+    update shares
+    set webid = #{webid,jdbcType=VARCHAR},
+      cookieid = #{cookieid,jdbcType=VARCHAR},
+      channel = #{channel,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      devicetype = #{devicetype,jdbcType=VARCHAR},
+      res = #{res,jdbcType=VARCHAR},
+      colordepth = #{colordepth,jdbcType=VARCHAR},
+      lang = #{lang,jdbcType=VARCHAR},
+      brower = #{brower,jdbcType=VARCHAR},
+      country = #{country,jdbcType=VARCHAR},
+      area = #{area,jdbcType=VARCHAR},
+      region = #{region,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      county = #{county,jdbcType=VARCHAR},
+      isp = #{isp,jdbcType=VARCHAR},
+      date = #{date,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

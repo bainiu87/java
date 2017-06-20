@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.zhihe.zdata.mapper.PvtableMapper" >
+  <resultMap id="BaseResultMap" type="com.zhihe.zdata.domain.Pvtable" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="webid" property="webid" jdbcType="VARCHAR" />
+    <result column="cookieid" property="cookieid" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="devicetype" property="devicetype" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="referrer" property="referrer" jdbcType="VARCHAR" />
+    <result column="res" property="res" jdbcType="VARCHAR" />
+    <result column="colordepth" property="colordepth" jdbcType="VARCHAR" />
+    <result column="lang" property="lang" jdbcType="VARCHAR" />
+    <result column="brower" property="brower" jdbcType="VARCHAR" />
+    <result column="agent" property="agent" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, webid, cookieid, ip, phone, devicetype, url, title, referrer, res, colordepth, 
+    lang, brower, agent
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from pvtable
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id = "selectByCountPv" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT
+    count(ip)
+    from pvtable
+    where devicetype = #{devicetype,jdbcType=VARCHAR}
+  </select>
+  <select id = "selectPv" resultType="java.lang.Integer">
+    select
+    count(ip)
+    from pvtable
+  </select>
+  <select id = "selectUv" resultType="java.lang.Integer">
+    SELECT
+    count(a)
+    FROM
+    (SELECT ip as a FROM pvtable GROUP BY ip)
+    AS b
+  </select>
+  <select id = "selectByCountUv" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT
+    count(a)
+    FROM
+    (SELECT ip as a FROM pvtable where devicetype = #{devicetype, jdbcType=VARCHAR} GROUP BY ip)
+    AS b
+  </select>
+  <select id = "selectDayPv" resultType="java.lang.Integer" parameterType="Map">
+    SELECT count(ip) FROM pvtable WHERE devicetype = #{devicetype, jdbcType=VARCHAR} and date > #{beginTime,jdbcType=DATE} and date <![CDATA[ <= ]]> #{overTime, jdbcType=DATE} GROUP BY date
+  </select>
+
+  <select id = "selectDayIp" resultType="java.lang.String" parameterType="Map">
+    SELECT ip FROM pvtable WHERE date <![CDATA[ >= ]]> #{beginTime,jdbcType=TIMESTAMP} and date &lt; #{overTime, jdbcType=TIMESTAMP} GROUP  BY ip
+  </select>
+  <select id = "selectDaySumPv" resultType="java.lang.Integer" parameterType="Map">
+    SELECT count(ip)
+    FROM pvtable
+    WHERE
+    date > #{beginTime, jdbcType=DATE}
+    and
+    date <![CDATA[ <= ]]> #{overTime, jdbcType=DATE}
+    GROUP BY date
+  </select>
+  <select id = "selectDayUv" resultType="java.lang.Integer" parameterType="Map">
+    SELECT count(ip) FROM
+    (SELECT  ip,date,count(ip) as a
+    FROM pvtable
+    WHERE devicetype = #{devicetype, jdbcType=VARCHAR}
+    and
+    date > #{beginTime, jdbcType=DATE}
+    and
+    date <![CDATA[ <= ]]> #{overTime, jdbcType=DATE}
+    GROUP BY date,ip) as b
+    GROUP BY date
+  </select>
+  <select id = "selectDaySumUv" resultType="java.lang.Integer" parameterType="Map">
+    SELECT count(a) FROM
+    (SELECT ip,date,count(ip) as a
+    FROM pvtable
+    WHERE date > #{beginTime, jdbcType=DATE}
+    and
+     date <![CDATA[ <= ]]> #{overTime, jdbcType=DATE}
+     GROUP BY date,ip) as b
+     GROUP BY date
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from pvtable
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhihe.zdata.domain.Pvtable" >
+    insert into pvtable (webid, cookieid,ip, phone, devicetype, url, title, referrer, res, colordepth, lang, brower, agent,date,domain,uri)
+    values (#{webid,jdbcType=VARCHAR}, #{cookieid,jdbcType=VARCHAR},
+      #{ip,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{devicetype,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{referrer,jdbcType=VARCHAR},
+      #{res,jdbcType=VARCHAR}, #{colordepth,jdbcType=VARCHAR}, #{lang,jdbcType=VARCHAR}, 
+      #{brower,jdbcType=VARCHAR}, #{agent,jdbcType=LONGVARCHAR}, #{date,jdbcType=TIMESTAMP},
+      #{domain,jdbcType=VARCHAR},#{uri,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <select id="select" resultType="java.lang.String" parameterType="Map">
+    SELECT ip from pvtable where date <![CDATA[ >= ]]> #{beginTime,jdbcType=TIMESTAMP} and date &lt; #{overTime, jdbcType=TIMESTAMP} GROUP  BY ip
+  </select>
+  <update id = "updateByIp" parameterType="Map">
+    UPDATE pvtable SET country = #{country,jdbcType=VARCHAR},area = #{area,jdbcType=VARCHAR}, region = #{region,jdbcType=VARCHAR},
+    city = #{city,jdbcType=VARCHAR},county = #{county,jdbcType=VARCHAR}, isp = #{isp,jdbcType=VARCHAR} WHERE ip = #{ip,jdbcType=INTEGER}
+  </update>
+  <insert id="insertSelective" parameterType="com.zhihe.zdata.domain.Pvtable" >
+    insert into pvtable
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="webid != null" >
+        webid,
+      </if>
+      <if test="cookieid != null" >
+        cookieid,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="devicetype != null" >
+        devicetype,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="referrer != null" >
+        referrer,
+      </if>
+      <if test="res != null" >
+        res,
+      </if>
+      <if test="colordepth != null" >
+        colordepth,
+      </if>
+      <if test="lang != null" >
+        lang,
+      </if>
+      <if test="brower != null" >
+        brower,
+      </if>
+      <if test="agent != null" >
+        agent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="webid != null" >
+        #{webid,jdbcType=VARCHAR},
+      </if>
+      <if test="cookieid != null" >
+        #{cookieid,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="devicetype != null" >
+        #{devicetype,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="referrer != null" >
+        #{referrer,jdbcType=VARCHAR},
+      </if>
+      <if test="res != null" >
+        #{res,jdbcType=VARCHAR},
+      </if>
+      <if test="colordepth != null" >
+        #{colordepth,jdbcType=VARCHAR},
+      </if>
+      <if test="lang != null" >
+        #{lang,jdbcType=VARCHAR},
+      </if>
+      <if test="brower != null" >
+        #{brower,jdbcType=VARCHAR},
+      </if>
+      <if test="agent != null" >
+        #{agent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhihe.zdata.domain.Pvtable" >
+    update pvtable
+    <set >
+      <if test="webid != null" >
+        webid = #{webid,jdbcType=VARCHAR},
+      </if>
+      <if test="cookieid != null" >
+        cookieid = #{cookieid,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="devicetype != null" >
+        devicetype = #{devicetype,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="referrer != null" >
+        referrer = #{referrer,jdbcType=VARCHAR},
+      </if>
+      <if test="res != null" >
+        res = #{res,jdbcType=VARCHAR},
+      </if>
+      <if test="colordepth != null" >
+        colordepth = #{colordepth,jdbcType=VARCHAR},
+      </if>
+      <if test="lang != null" >
+        lang = #{lang,jdbcType=VARCHAR},
+      </if>
+      <if test="brower != null" >
+        brower = #{brower,jdbcType=VARCHAR},
+      </if>
+      <if test="agent != null" >
+        agent = #{agent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhihe.zdata.domain.Pvtable" >
+    update pvtable
+    set webid = #{webid,jdbcType=VARCHAR},
+      cookieid = #{cookieid,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      devicetype = #{devicetype,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      referrer = #{referrer,jdbcType=VARCHAR},
+      res = #{res,jdbcType=VARCHAR},
+      colordepth = #{colordepth,jdbcType=VARCHAR},
+      lang = #{lang,jdbcType=VARCHAR},
+      brower = #{brower,jdbcType=VARCHAR},
+      agent = #{agent,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>
